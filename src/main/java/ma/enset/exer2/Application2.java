@@ -34,7 +34,7 @@ public class Application2 {
             System.out.println(t.toString());
         }
         // calcul sur le cluster
-        ventecount.saveAsTextFile("hdfs://localhost:9000/venteAnnee.txt");
+        ventecount.saveAsTextFile("hdfs://localhost:9000/venteAnnee");
 
 
     }

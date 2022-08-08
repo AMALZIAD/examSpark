@@ -31,23 +31,36 @@ public class Application1 {
     }
 
      public static void TMIN(JavaRDD<String> rddRows){
-        JavaRDD<String> rddTMIN=rddRows.filter(s ->s.contains("TMIN"));
-        JavaRDD< String> rddTminTemp = rddTMIN.map(s -> s.split(",")[3]);
-        JavaRDD< Double> rdddouble= rddTminTemp.map(s ->Double.parseDouble(s));
-        Double SumTemp= rdddouble.reduce((x,y) ->x+y);
-        SumTemp=SumTemp/rdddouble.count();
+             /*JavaRDD<String> rddTMIN=rddRows.filter(s ->s.contains("TMIN"));
+             JavaRDD< String> rddTminTemp = rddTMIN.map(s -> s.split(",")[3]);
+             JavaRDD< Double> rdddouble= rddTminTemp.map(s ->Double.parseDouble(s));
+             Double SumTemp= rdddouble.reduce((x,y) ->x+y);
+             SumTemp=SumTemp/rdddouble.count();
+             System.out.println(SumTemp.toString());*/
 
-        System.out.println(SumTemp.toString());
+         JavaRDD<String> rddTMIN=rddRows.filter(s ->s.contains("TAVG"));
+         JavaRDD< String> rddTminTemp = rddTMIN.map(s -> s.split(",")[3]);
+         JavaRDD< Double> rdddouble= rddTminTemp.map(s ->Double.parseDouble(s));
+         Double minTemp= rdddouble.reduce((x,y) ->Math.min(x,y));
+
+         System.out.println(minTemp.toString());
     }
 
      static void  TMAX( JavaRDD<String> rddRows){
-        JavaRDD<String> rddTMIN=rddRows.filter(s ->s.contains("TMAX"));
+        /*JavaRDD<String> rddTMIN=rddRows.filter(s ->s.contains("TMAX"));
         JavaRDD< String> rddTminTemp = rddTMIN.map(s -> s.split(",")[3]);
         JavaRDD< Double> rdddouble= rddTminTemp.map(s ->Double.parseDouble(s));
         Double SumTemp= rdddouble.reduce((x,y) ->x+y);
         SumTemp=SumTemp/rdddouble.count();
 
-        System.out.println(SumTemp.toString());
+        System.out.println(SumTemp.toString());*/
+
+         JavaRDD<String> rddTMIN=rddRows.filter(s ->s.contains("TAVG"));
+         JavaRDD< String> rddTminTemp = rddTMIN.map(s -> s.split(",")[3]);
+         JavaRDD< Double> rdddouble= rddTminTemp.map(s ->Double.parseDouble(s));
+         Double maxTemp= rdddouble.reduce((x,y) ->Math.max(x,y));
+
+         System.out.println(maxTemp.toString());
     }
     static void  MAXTMAX( JavaRDD<String> rddRows){
         JavaRDD<String> rddTMIN=rddRows.filter(s ->s.contains("TMAX"));
