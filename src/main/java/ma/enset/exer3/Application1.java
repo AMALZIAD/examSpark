@@ -12,7 +12,7 @@ public class Application1 {
     public static void main(String[] args) {
         SparkConf conf=new SparkConf().setAppName("Exe2 RDD").setMaster("local[*]");
         JavaSparkContext sc=new JavaSparkContext(conf);
-        JavaRDD<String> rddLines=sc.textFile("hdfs://localhost:9000/1763.csv");
+        JavaRDD<String> rddLines=sc.textFile("hdfs://localhost:9000/2020.csv");
         JavaRDD<String> rddRows=rddLines.flatMap(s ->
                 Arrays.asList(s.split("\n")).iterator());
         // LIST TEMPURATURE MIN
