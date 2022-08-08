@@ -4,11 +4,8 @@ import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.JavaPairRDD;
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
-import scala.Tuple1;
 import scala.Tuple2;
-
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.List;
 
 public class Application1 {
@@ -18,11 +15,18 @@ public class Application1 {
         JavaRDD<String> rddLines=sc.textFile("hdfs://localhost:9000/1763.csv");
         JavaRDD<String> rddRows=rddLines.flatMap(s ->
                 Arrays.asList(s.split("\n")).iterator());
-
+        // LIST TEMPURATURE MIN
        //TMIN(rddRows);
+       // LIST TEMPERATURE MAX
        //TMAX(rddRows);
+       // TEMPURATURE MAX DU MAX
        //MAXTMAX(rddRows);
-        TOPMAX(rddRows);
+       // TEMPURATURE MIN DU MIN
+       //MINTMIN(rddRows);
+        // TEMPURATURE TOP 5 DU MAX
+        //TOPMAX(rddRows);
+       // TEMPURATURE TOP 5 DU MIN
+       TOPMIN(rddRows);
 
     }
 
@@ -62,13 +66,31 @@ public class Application1 {
     }
 
     static void  TOPMAX( JavaRDD<String> rddRows){
+        // list of all lines with tmax value
         JavaRDD<String> rddTMIN=rddRows.filter(s ->s.contains("TMAX"));
+
+        // key value ( temp , station id)
         JavaPairRDD<Double,String > rddPairs = rddTMIN
                 .mapToPair(s -> new Tuple2<>(
                         Double.valueOf(s.split(",")[3]),(s.split(","))[0] ));
+        // select du top 5 de la liste
+        List<Tuple2<Double,String >>   el = rddPairs.sortByKey(false).take(5);
+        // affichage de la liste
+        for (Tuple2<Double,String > t : el) {
+            System.out.println(t.toString());
+        }
+    }
+    static void  TOPMIN( JavaRDD<String> rddRows){
+        // list of all lines with tmax value
+        JavaRDD<String> rddTMIN=rddRows.filter(s ->s.contains("TMIN"));
 
-        List<Tuple2<Double,String >>   el = rddPairs.sortByKey().take(5);
-
+        // key value ( temp , station id)
+        JavaPairRDD<Double,String > rddPairs = rddTMIN
+                .mapToPair(s -> new Tuple2<>(
+                        Double.valueOf(s.split(",")[3]),(s.split(","))[0] ));
+        // select du top 5 de la liste
+        List<Tuple2<Double,String >>   el = rddPairs.sortByKey(true).take(5);
+        // affichage de la liste
         for (Tuple2<Double,String > t : el) {
             System.out.println(t.toString());
         }
